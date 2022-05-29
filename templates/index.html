@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Import axios, which makes HTTP requests in JS a little easier-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <button onclick="getRandomNumber()">Click to refresh</button>
+
+    <p>Random number: <span id="randomNumberDiv"></span></p>
+    <p>Double the random number: <span id="doubleRandomNumberDiv"></span></p>
+    <p>The time on the server: <span id="serverTimeDiv"></span></p>
+    
+    <br>
+    <p>The raw json returned is as follows:</p>
+    <p>
+        <div id="rawJsonDiv"></div>
+    </p>
+
+
+    <script>
+
+        function getRandomNumber() {
+
+            url = "/api/datapoint";
+
+            axios.get(url)
+            .then(function(response) {
+
+                // The data will all be returned as a JSON object
+                // We can access the data by using the data property of the response object
+
+                document.getElementById('randomNumberDiv').innerHTML = response.data.random_number;
+                document.getElementById('doubleRandomNumberDiv').innerHTML = response.data.double_random_number;
+                document.getElementById('serverTimeDiv').innerHTML = response.data.timestamp;
+                document.getElementById('rawJsonDiv').innerHTML = JSON.stringify(response.data);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
+
+        // This calls the function getRandomNumber() every 2 seconds
+        var intervalID = window.setInterval(getRandomNumber, 2000);
+
+    </script>
+</body>
+</html>
